@@ -45,6 +45,8 @@ module.exports.expenseTrendsSimilarity = async (req, res) => {
 
         const similarUsers = rows.map(({user_id}) => user_id);
 
+        const filtered = similarUsers.filter(item => item !== Number(req.params.id));
+
         const usersQuery = `SELECT u.first_name || ' ' || u.last_name AS full_name,
                             u.avatar,
                             extract(year from  AGE(created_at)) * 12 + extract(month from AGE(created_at)) AS months_ago,
@@ -52,9 +54,9 @@ module.exports.expenseTrendsSimilarity = async (req, res) => {
                             FROM users u
                             INNER JOIN transactions t
                             ON t.user_id = u.id 
-                            WHERE t.user_id = ANY('{${similarUsers.toString()}}') 
+                            WHERE t.user_id = ANY('{${filtered.toString()}}') 
                             GROUP BY u.id, t.user_id 
-                            ORDER BY last_name;`
+                            ORDER BY u.id;`
 
 
         const usersDetails = await query(usersQuery);
