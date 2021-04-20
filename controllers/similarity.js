@@ -52,7 +52,7 @@ module.exports.expenseTrendsSimilarity = async (req, res) => {
                             FROM users u
                             INNER JOIN transactions t
                             ON t.user_id = u.id 
-                            WHERE t.user_id = ANY('{2157, 2158, 2187, 2176, 2148}') 
+                            WHERE t.user_id = ANY('{${similarUsers.toString()}}') 
                             GROUP BY u.id, t.user_id 
                             ORDER BY last_name;`
 

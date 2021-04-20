@@ -10,7 +10,7 @@ const config = {
 };
 
 const pool = new pg.Pool(config);
-console.log('pool');
+
 pool.on('connect', () => {
   console.log('connected to the Database');
 });
